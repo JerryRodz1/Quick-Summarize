@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>QuickSummarize</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f0f4f8;
+      color: #333;
+      padding: 20px;
+      width: 320px;
+      box-sizing: border-box;
+    }
+    h1 {
+      color: #0078d7;
+      margin-bottom: 15px;
+      text-align: center;
+    }
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+    select, input[type="range"], button {
+      width: 100%;
+      padding: 8px;
+      font-size: 14px;
+      margin-bottom: 15px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+    }
+    button {
+      border: none;
+      cursor: pointer;
+      color: white;
+    }
+    #summarize {
+      background-color: #0078d7;
+      font-size: 16px;
+      padding: 12px;
+    }
+    #summarize:hover {
+      background-color: #005fa3;
+    }
+    #copyBtn {
+      background-color: #28a745;
+    }
+    #copyBtn:hover {
+      background-color: #1e7e34;
+    }
+    #saveDownloadContainer {
+      display: flex;
+      gap: 8px;
+      margin-top: 10px;
+    }
+    #saveDownloadContainer button {
+      flex: 1;
+      padding: 10px;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+      color: white;
+    }
+    #saveBtn {
+      background-color: #007bff;
+    }
+    #saveBtn:hover {
+      background-color: #0056b3;
+    }
+    #downloadBtn {
+      background-color: #6c757d;
+    }
+    #downloadBtn:hover {
+      background-color: #5a6268;
+    }
+    #readBtn {
+      background-color: #0078d7;
+      color: white;
+      border-radius: 6px;
+      padding: 12px;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+      width: 100%;
+      margin-top: 10px;
+    }
+    #readBtn:hover {
+      background-color: #005fa3;
+    }
+    #loading {
+      margin-top: 10px;
+      text-align: center;
+      display: none;
+      color: #666;
+    }
+    #summary {
+      margin-top: 20px;
+      background: white;
+      border-radius: 8px;
+      padding: 15px;
+      min-height: 100px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      font-size: 14px;
+      line-height: 1.5;
+      white-space: pre-wrap;
+    }
+    #copyMsg, #saveMsg {
+      color: green;
+      text-align: center;
+      display: none;
+      margin-top: -10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>QuickSummarize</h1>
+
+  <label for="toneSelect">Tone:</label>
+  <select id="toneSelect">
+    <option value="neutral">Neutral</option>
+    <option value="casual">Casual</option>
+    <option value="formal">Formal</option>
+    <option value="funny">Funny</option>
+    <option value="enthusiastic">Enthusiastic</option>
+  </select>
+
+  <label for="wordLimit">Word Limit: <span id="wordCount">50</span></label>
+  <input type="range" id="wordLimit" min="20" max="200" value="50" />
+
+  <button id="summarize">Summarize Page</button>
+  <div id="loading"> Summarizing...</div>
+  <div id="summary"></div>
+
+  <button id="copyBtn">Copy</button>
+  <div id="copyMsg">Copied!</div>
+
+  <div id="saveDownloadContainer">
+    <button id="saveBtn"> Save</button>
+    <button id="downloadBtn"> Download</button>
+  </div>
+  <div id="saveMsg">Saved!</div>
+
+  <button id="readBtn"> Read Summary</button>
+
+  <script src="config.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>

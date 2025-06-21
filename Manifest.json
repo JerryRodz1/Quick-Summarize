@@ -1,0 +1,14 @@
+{
+    "manifest_version": 3,
+    "name": "QuickSummarize",
+    "version": "1.0",
+    "action": {
+      "default_popup": "popup.html"
+    },
+    "permissions": ["activeTab", "scripting", "storage"],
+    "host_permissions": [
+      "<all_urls>",
+      "https://api.openai.com/*"
+    ]
+  }
+  
