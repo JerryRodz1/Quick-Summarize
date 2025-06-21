@@ -1,34 +1,78 @@
-# Quick Summarize — Chrome Extension
+**# QuickSummarize Chrome Extension
 
-Quick Summarize is a Chrome extension that uses OpenAI's GPT to quickly summarize webpage content in a tone and length you choose — with optional text-to-speech reading and dark mode.
+QuickSummarize is a lightweight Chrome extension that uses OpenAI’s GPT-3.5 API to instantly summarize any webpage content. Customize the tone and length of your summaries, listen to them via text-to-speech, and save or download for easy reference.
 
 ---
 
 ## Features
 
-- Summarize any webpage text instantly  
-- Choose tone (neutral, funny, professional, etc.)  
-- Adjust word count limit for summary length  
-- Read summary aloud with natural-sounding voice  
-- Save and download summaries  
-- Dark mode toggle for comfortable reading  
+- **Instant Summaries**: Summarize the current page text with one click.
+- **Tone Selection**: Choose from multiple tones such as Neutral, Formal, Friendly, etc.
+- **Adjustable Summary Length**: Use the slider to set your desired summary word count.
+- **Dark Mode**: Toggle between light and dark themes for comfortable reading.
+- **Text-to-Speech**: Listen to summaries read aloud in a natural voice.
+- **Save & Download**: Save your last summary locally or download it as a `.txt` file.
+- **Copy to Clipboard**: Quickly copy summaries to share or use elsewhere.
+
+---
+
+## Demo
+
+![QuickSummarize Demo GIF](link-to-demo-gif-if-any)
 
 ---
 
 ## Installation
 
-### From GitHub (Developer Mode)
+### For Developers / Advanced Users
 
-1. Clone or download this repo to your computer.  
-2. Open Chrome and go to `chrome://extensions/`  
-3. Enable **Developer mode** (top right)  
-4. Click **Load unpacked** and select the extension folder  
-5. The Quick Summarize icon should appear in your toolbar  
+1. Clone or download this repository.
+2. Open `chrome://extensions/` in your Chrome browser.
+3. Enable **Developer mode** (toggle top-right).
+4. Click **Load unpacked** and select the extension folder.
+5. IMPORTANT: Add your OpenAI API key in `config.js` (or directly in `popup.js` if you prefer).
+   
+   **Do NOT commit your API key to public repos.** Use environment variables or `.gitignore` to keep it private.
 
-### Note on API Key
+---
 
-This extension requires an OpenAI API key. To keep your key private:
+## Usage
 
-- Create a file named `config.js` with the following line (replace with your API key):  
-  ```js
-  const API_KEY = "your-openai-api-key-here";
+1. Click the QuickSummarize icon in the toolbar.
+2. Select your preferred tone and summary length.
+3. Click **Summarize** to generate a summary of the active tab’s text.
+4. Use the buttons to copy, save, download, or listen to your summary.
+5. Toggle dark mode for a comfortable viewing experience.
+
+---
+
+## Configuration
+
+- **API Key**: The extension requires an OpenAI API key to work. Store it securely and avoid pushing it publicly.
+- **Max Text Limit**: The extension sends up to 3000 characters from the page to the API to ensure performance.
+
+---
+
+## Contributing
+
+Feel free to fork the repo, open issues, or submit pull requests to improve QuickSummarize!
+
+---
+
+## Acknowledgments
+
+- OpenAI for providing the GPT-3.5 API.
+- Chrome Extensions documentation for comprehensive guides.
+- Inspiration from community-driven Chrome extension projects.
+
+---
+
+## Contact
+
+For questions or feedback, reach out at [Jerryrodriguezz111@gmail.com] or open an issue here on GitHub.
+
+---
+
+**Enjoy summarizing smarter! 🚀**
+
+******
