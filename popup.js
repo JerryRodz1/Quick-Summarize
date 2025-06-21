@@ -1,42 +1,44 @@
-const API_KEY = "YOUR_API_KEY_HERE"; 
-
 console.log("popup.js loaded");
 
 const summarizeBtn = document.getElementById("summarize");
 const summaryDiv = document.getElementById("summary");
 const loadingDiv = document.getElementById("loading");
 
+const copyBtn = document.getElementById("copyBtn");
+const copyMsg = document.getElementById("copyMsg");
+
 const toneSelect = document.getElementById("toneSelect");
 const wordLimitSlider = document.getElementById("wordLimit");
 const wordCountSpan = document.getElementById("wordCount");
-
-const copyBtn = document.getElementById("copyBtn");
-const copyMsg = document.getElementById("copyMsg");
 
 const saveBtn = document.getElementById("saveBtn");
 const downloadBtn = document.getElementById("downloadBtn");
 const saveMsg = document.getElementById("saveMsg");
 
-const readBtn = document.getElementById("readBtn");
+const darkModeToggle = document.getElementById("darkModeToggle");
+const readAloudBtn = document.getElementById("readAloudBtn");
 
-// Update word count display on slider move
+function typeSummary(text, targetDiv) {
+  targetDiv.innerText = "";
+  let i = 0;
+  const interval = setInterval(() => {
+    if (i < text.length) {
+      targetDiv.innerText += text.charAt(i);
+      i++;
+    } else {
+      clearInterval(interval);
+    }
+  }, 15);
+}
+
 wordLimitSlider.addEventListener("input", () => {
   wordCountSpan.innerText = wordLimitSlider.value;
 });
 
-// Load saved summary on popup load
-window.onload = () => {
-  chrome.storage.local.get("lastSummary", (data) => {
-    if (data.lastSummary) {
-      summaryDiv.innerText = data.lastSummary;
-    }
-  });
-};
-
-// Summarize page content
 summarizeBtn.addEventListener("click", async () => {
   summaryDiv.innerText = "";
   loadingDiv.style.display = "block";
+  summarizeBtn.disabled = true;
 
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
 
@@ -51,42 +53,37 @@ summarizeBtn.addEventListener("click", async () => {
       const wordLimit = wordLimitSlider.value;
 
       const summary = await getSummary(pageText, tone, wordLimit);
-      summaryDiv.innerText = summary;
+
       loadingDiv.style.display = "none";
+      summarizeBtn.disabled = false;
+      typeSummary(summary, summaryDiv);
     }
   );
 });
 
-// Copy summary to clipboard
 copyBtn.addEventListener("click", () => {
-  const summaryText = summaryDiv.innerText;
-  if (!summaryText) return;
-
-  navigator.clipboard.writeText(summaryText).then(() => {
+  const text = summaryDiv.innerText;
+  if (!text) return;
+  navigator.clipboard.writeText(text).then(() => {
     copyMsg.style.display = "block";
     setTimeout(() => (copyMsg.style.display = "none"), 2000);
   });
 });
 
-// Save summary locally
 saveBtn.addEventListener("click", () => {
-  const summaryText = summaryDiv.innerText;
-  if (!summaryText) return;
-
-  chrome.storage.local.set({ lastSummary: summaryText }, () => {
+  const text = summaryDiv.innerText;
+  if (!text) return;
+  chrome.storage.local.set({ lastSummary: text }, () => {
     saveMsg.style.display = "block";
     setTimeout(() => (saveMsg.style.display = "none"), 2000);
   });
 });
 
-// Download summary as a text file
 downloadBtn.addEventListener("click", () => {
-  const summaryText = summaryDiv.innerText;
-  if (!summaryText) return;
-
-  const blob = new Blob([summaryText], { type: "text/plain" });
+  const text = summaryDiv.innerText;
+  if (!text) return;
+  const blob = new Blob([text], { type: "text/plain" });
   const url = URL.createObjectURL(blob);
-
   const a = document.createElement("a");
   a.href = url;
   a.download = "summary.txt";
@@ -94,41 +91,42 @@ downloadBtn.addEventListener("click", () => {
   URL.revokeObjectURL(url);
 });
 
-// Text-to-speech with more natural tone
-readBtn.addEventListener("click", () => {
-    const summaryText = summaryDiv.innerText;
-    if (!summaryText) return;
-  
-    window.speechSynthesis.cancel();
-  
-    const utterance = new SpeechSynthesisUtterance(summaryText);
-  
-    const voices = window.speechSynthesis.getVoices();
-  
-    const selectedVoice =
-      voices.find(v => v.name === "Samantha") ||
-      voices.find(v => v.name === "Alex") ||
-      voices.find(v => v.lang === "en-US") ||
-      voices[0];
-  
-    if (selectedVoice) utterance.voice = selectedVoice;
-  
-    utterance.pitch = 0.9;  // slightly lower pitch for naturalness
-    utterance.rate = 0.8;   // slower rate for clarity
-  
-    window.speechSynthesis.speak(utterance);
-  });
-  
+readAloudBtn.addEventListener("click", () => {
+  const text = summaryDiv.innerText;
+  if (!text) return;
+  const utterance = new SpeechSynthesisUtterance(text);
+  const voices = window.speechSynthesis.getVoices();
+  const siriVoice = voices.find(
+    (v) => v.name.includes("Samantha") || v.name.includes("Siri") || v.lang === "en-US"
+  );
+  if (siriVoice) utterance.voice = siriVoice;
+  utterance.rate = 1;
+  utterance.pitch = 1;
+  window.speechSynthesis.speak(utterance);
+});
 
-// Sometimes voices load late — log when they load (optional)
-window.speechSynthesis.onvoiceschanged = () => {
-  console.log("Voices loaded:", window.speechSynthesis.getVoices());
+darkModeToggle.addEventListener("change", () => {
+  if (darkModeToggle.checked) {
+    document.body.classList.add("dark");
+    chrome.storage.local.set({ darkMode: true });
+  } else {
+    document.body.classList.remove("dark");
+    chrome.storage.local.set({ darkMode: false });
+  }
+});
+
+window.onload = () => {
+  chrome.storage.local.get(["lastSummary", "darkMode"], (data) => {
+    if (data.lastSummary) summaryDiv.innerText = data.lastSummary;
+    if (data.darkMode) {
+      document.body.classList.add("dark");
+      darkModeToggle.checked = true;
+    }
+  });
 };
 
-// Function to call OpenAI API and get summary
 async function getSummary(text, tone = "neutral", wordLimit = 50) {
-  const prompt = `Summarize the following page content in a ${tone} tone and limit it to approximately ${wordLimit} words:\n\n${text.substring(0, 3000)}`;
-
+  const prompt = `Summarize this in a ${tone} tone in about ${wordLimit} words:\n\n${text.substring(0, 3000)}`;
   try {
     const response = await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
@@ -139,19 +137,20 @@ async function getSummary(text, tone = "neutral", wordLimit = 50) {
       body: JSON.stringify({
         model: "gpt-3.5-turbo",
         messages: [{ role: "user", content: prompt }],
-        max_tokens: 300,
-        temperature: 0.7,
+        max_tokens: 150,
       }),
     });
 
     if (!response.ok) {
-      const errorDetails = await response.json();
-      return `API error: ${errorDetails.error.message}`;
+      const err = await response.json();
+      console.error("API error:", err);
+      return `API error: ${err.error.message}`;
     }
 
     const data = await response.json();
     return data.choices?.[0]?.message?.content || "No summary returned.";
-  } catch (err) {
-    return `Fetch error: ${err.message}`;
+  } catch (error) {
+    console.error("Fetch error:", error);
+    return `Fetch error: ${error.message}`;
   }
 }
