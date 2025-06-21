@@ -1,6 +1,6 @@
-# 🔍 QuickGist Chrome Extension
+# 🔍 Quick Summarize Chrome Extension
 
-QuickGist is a lightweight Chrome extension that uses OpenAI’s GPT API to summarize any webpage instantly. You can customize tone, summary length, and even listen to the summary with text-to-speech.
+Quick Summarize is a lightweight Chrome extension that uses OpenAI’s GPT API to summarize any webpage instantly. You can customize tone, summary length, and even listen to the summary with text-to-speech.
 
 ---
 
