@@ -1,4 +1,4 @@
-const API_KEY = "sk-proj-SC-8K2xQ90qY89wFwlUN-G7/4g"; 
+const API_KEY = "YOUR_API_KEY_HERE"; 
 
 console.log("popup.js loaded");
 
