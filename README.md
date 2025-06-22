@@ -1,10 +1,10 @@
-**# QuickSummarize Chrome Extension
+# QuickSummarize Chrome Extension
 
 QuickSummarize is a lightweight Chrome extension that uses OpenAI’s GPT-3.5 API to instantly summarize any webpage content. Customize the tone and length of your summaries, listen to them via text-to-speech, and save or download for easy reference.
 
 ---
 
-## Features
+# Features
 
 - **Instant Summaries**: Summarize the current page text with one click.
 - **Tone Selection**: Choose from multiple tones such as Neutral, Formal, Friendly, etc.
@@ -13,12 +13,6 @@ QuickSummarize is a lightweight Chrome extension that uses OpenAI’s GPT-3.5 AP
 - **Text-to-Speech**: Listen to summaries read aloud in a natural voice.
 - **Save & Download**: Save your last summary locally or download it as a `.txt` file.
 - **Copy to Clipboard**: Quickly copy summaries to share or use elsewhere.
-
----
-
-## Demo
-
-![QuickSummarize Demo GIF](link-to-demo-gif-if-any)
 
 ---
 
@@ -74,5 +68,3 @@ For questions or feedback, reach out at [Jerryrodriguezz111@gmail.com] or open a
 ---
 
 **Enjoy summarizing smarter! 🚀**
-
-******
